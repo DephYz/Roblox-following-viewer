@@ -1,0 +1,40 @@
+// THIS SCRIPT WILL DOWNLOAD THE FOLLOWED PLAYERS DATA DIRECLTY TO YOUR PC
+
+// usin ajax cus i can lmfao
+$.ajax({ 
+    method: "GET",
+    url: "https://friends.roblox.com/v1/users/PUT THE USER ID/followings?limit=100",//you can also change the limit for wtv reason , Available values : 10, 18, 25, 50, 100
+    contentType: "application/json",
+    data: JSON.stringify({
+      "previousPageCursor": "null", 
+      "nextPageCursor": "null"
+    }),
+    success: function(response) {
+      // Save response to file
+      console.save(response, 'response.json'); //change the name of the saved files name if u want 
+    },
+    error: function(jqXHR, textStatus, errorThrown) {
+      console.error('Error: ' + textStatus, errorThrown);
+    }
+  });
+  
+  (function(console){
+    console.save = function(data, filename){
+      if (!data) {
+        console.error('Console.save: No data');
+        return;
+      }
+      if (!filename) filename = 'console.json';
+      if (typeof data === "object") {
+        data = JSON.stringify(data, undefined, 4);
+      }
+      var blob = new Blob([data], {type: 'text/json'}),
+          e    = document.createEvent('MouseEvents'),
+          a    = document.createElement('a');
+      a.download = filename;
+      a.href = window.URL.createObjectURL(blob);
+      a.dataset.downloadurl = ['text/json', a.download, a.href].join(':');
+      e.initMouseEvent('click', true, false, window, 0, 0, 0, 0, 0, false, false, false, false, 0, null);
+      a.dispatchEvent(e);
+    }
+  })(console);
